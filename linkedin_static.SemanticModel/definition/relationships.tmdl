@@ -1,0 +1,56 @@
+relationship AutoDetected_f3f9af35-e7a6-4698-a7cb-1cf2b43eebbb
+	fromColumn: company_industries.company_id
+	toColumn: companies.company_id
+
+relationship AutoDetected_53221c1e-a641-4312-ae94-6e1b9fb18708
+	fromColumn: company_specialities.company_id
+	toColumn: companies.company_id
+
+relationship AutoDetected_ec76b99d-437a-4780-ac6b-224db06bdd45
+	fromColumn: employee_counts.company_id
+	toColumn: companies.company_id
+
+relationship AutoDetected_3f1804a7-1f71-428c-89d0-118fa5199518
+	fromColumn: postings.company_id
+	toColumn: companies.company_id
+
+relationship AutoDetected_1b2ba2ca-67b4-49c3-8f74-663dd0ff4dc4
+	fromColumn: job_industries.industry_id
+	toColumn: industries.industry_id
+
+relationship AutoDetected_9b5920f8-2e2c-4767-976a-9a8a9d91faac
+	fromColumn: job_skills.skill_abr
+	toColumn: skills.skill_abr
+
+relationship ac405c4a-2537-bb94-c064-371027b625c1
+	fromColumn: benefits.job_id
+	toColumn: postings.job_id
+
+relationship 8dad8608-e3d2-e598-9330-b7589eea4cc5
+	fromColumn: job_skills.job_id
+	toColumn: postings.job_id
+
+relationship 3e654ae8-244a-eacf-cefe-5ed134aa2918
+	crossFilteringBehavior: bothDirections
+	fromColumn: job_industries.job_id
+	toColumn: postings.job_id
+
+relationship AutoDetected_0a7187b2-06a0-4e66-be52-5e3511c5b0f7
+	fromColumn: companies.'State Name'
+	toColumn: states.'State Name'
+
+relationship 6da8de6c-41fd-4adc-ac69-c881fd4a313e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: postings.listed_date_time
+	toColumn: LocalDateTable_fc8354ad-665a-4476-9332-f350c99d81a7.Date
+
+relationship c6de2dd4-d6b6-4221-b299-db86788cc3ee
+	joinOnDateBehavior: datePartOnly
+	fromColumn: postings.closed_date_time
+	toColumn: LocalDateTable_54abcdc0-5ae8-4850-8da7-7a1ed2bcb70c.Date
+
+relationship 39446712-f7f2-4fc1-9c70-8815d7819a8f
+	joinOnDateBehavior: datePartOnly
+	fromColumn: postings.expiry_date_time
+	toColumn: LocalDateTable_a8978042-2d98-4a7f-870a-48fbca940db4.Date
+

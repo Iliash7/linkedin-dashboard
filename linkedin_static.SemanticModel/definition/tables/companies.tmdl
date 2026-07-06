@@ -1,0 +1,182 @@
+table companies
+	lineageTag: e8919df4-e0d0-4a1e-ae50-e99c0f54fed9
+
+	column company_id
+		dataType: int64
+		formatString: 0
+		lineageTag: cb922eca-4e5d-4cef-b5e1-c89e6fc5a833
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: ac65b782-e9de-44a8-adff-d5ffade98010
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 9e1685e0-0fd5-4cc7-b747-16e7b554efd8
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_size
+		dataType: int64
+		formatString: 0
+		lineageTag: ae0e00df-35ec-44e2-9810-5c0a2c52635d
+		summarizeBy: sum
+		sourceColumn: company_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: 545322e6-04c6-4632-b696-aab62318c29c
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: dd7dd0b5-21e5-456e-9f11-57ec460924bb
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 60dda400-4bf1-4b81-b5c3-701503ac3e6c
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column zip_code
+		dataType: string
+		lineageTag: e32aed88-2a97-47c1-8e41-2ccc9c5cd9b4
+		summarizeBy: none
+		sourceColumn: zip_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column address
+		dataType: string
+		lineageTag: e86faf26-460e-4dbd-b66e-518e9e6f25cb
+		summarizeBy: none
+		sourceColumn: address
+
+		annotation SummarizationSetBy = Automatic
+
+	column url
+		dataType: string
+		lineageTag: 37ca21f1-7bde-40e3-bacd-3bc5e07d3d26
+		summarizeBy: none
+		sourceColumn: url
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'states.State Name'
+		dataType: string
+		lineageTag: fc3d9753-183b-4590-a629-87462e298f17
+		summarizeBy: none
+		sourceColumn: states.State Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Custom
+		dataType: string
+		lineageTag: 195ecfcb-1013-4ec8-90e7-91aaa91cd035
+		summarizeBy: none
+		sourceColumn: Custom
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'State Name'
+		dataType: string
+		lineageTag: d303a452-cb19-4ced-bb52-d58c7455846a
+		summarizeBy: none
+		sourceColumn: State Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition companies = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ilias\OneDrive\Desktop\ilia\power bi\linkedin job postings\static datasets\companies.csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"company_id", Int64.Type}, {"name", type text}, {"description", type text}, {"company_size", Int64.Type}, {"state", type text}, {"country", type text}, {"city", type text}, {"zip_code", type text}, {"address", type text}, {"url", type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type",{{"state", Text.Trim, type text}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"state", Text.Clean, type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Cleaned Text", each ([country] = "US")),
+				    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "Custom", each Text.Length(Text.Select([state], {"0".."9"})) > 0),
+				    #"Filtered Rows1" = Table.SelectRows(#"Added Custom", each true),
+				    #"Filtered Rows2" = Table.SelectRows(#"Filtered Rows1", each ([Custom] = false)),
+				    #"Uppercased Text" = Table.TransformColumns(#"Filtered Rows2",{{"state", Text.Upper, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Uppercased Text",".","",Replacer.ReplaceText,{"state"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Replaced Value", {"state"}, states, {"Code"}, "states", JoinKind.LeftOuter),
+				    #"Expanded states" = Table.ExpandTableColumn(#"Merged Queries", "states", {"State Name"}, {"states.State Name"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Expanded states",{"company_id", "name", "description", "company_size", "states.State Name", "state", "country", "city", "zip_code", "address", "url", "Custom"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Reordered Columns", "State Name", each if [states.State Name] = null then [state] else [states.State Name]),
+				    #"Uppercased Text1" = Table.TransformColumns(#"Added Conditional Column",{{"State Name", Text.Upper, type text}}),
+				    #"Filtered Rows3" = Table.SelectRows(#"Uppercased Text1", each Text.Contains([State Name], " ")),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Filtered Rows3","WICHITA, KS","KANSAS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","CO - COLORADO","COLORADO",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value3" = Table.ReplaceValue(#"Replaced Value2","PLYMOUTH MEETING, PA,","PENNSYLVANIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value4" = Table.ReplaceValue(#"Replaced Value3","WESTERN NORTH CAROLINA","NORTH CAROLINA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value5" = Table.ReplaceValue(#"Replaced Value4","BASSETT, VA","VIRGINIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value6" = Table.ReplaceValue(#"Replaced Value5","BEVERLY HILLS","CALIFORNIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value7" = Table.ReplaceValue(#"Replaced Value6","AL - ALABAMA","ALABAMA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value8" = Table.ReplaceValue(#"Replaced Value7","UNIVERSITY PARK, IL","ILLINOIS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value9" = Table.ReplaceValue(#"Replaced Value8","MI - MICHIGAN","MICHIGAN",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value10" = Table.ReplaceValue(#"Replaced Value9","DISTRICT OF COLUMBIA","DC",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value11" = Table.ReplaceValue(#"Replaced Value10","DC (DC)","DC",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value12" = Table.ReplaceValue(#"Replaced Value11","MINNESOTA (MN)","MINNESOTA ",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value13" = Table.ReplaceValue(#"Replaced Value12","WI - WISCONSIN","WISCONSIN",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value14" = Table.ReplaceValue(#"Replaced Value13","NEW JERSEY (NJ)","NEW JERSEY",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value15" = Table.ReplaceValue(#"Replaced Value14","CALIFORNIA (CA)","CALIFORNIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value16" = Table.ReplaceValue(#"Replaced Value15","CA - CALIFORNIA","CALIFORNIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value17" = Table.ReplaceValue(#"Replaced Value16","CA, SAN DIEGO","CALIFORNIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value18" = Table.ReplaceValue(#"Replaced Value17","DC METROPOLITAN AREA","DC",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value19" = Table.ReplaceValue(#"Replaced Value18","UT UTAH","UTAH",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value20" = Table.ReplaceValue(#"Replaced Value19","(TX)","",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value21" = Table.ReplaceValue(#"Replaced Value20","NV - NEVADA","NEVADA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value22" = Table.ReplaceValue(#"Replaced Value21","WASHINGTON DC","DC",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value23" = Table.ReplaceValue(#"Replaced Value22","(LA)","",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value24" = Table.ReplaceValue(#"Replaced Value23","[NY]","",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value25" = Table.ReplaceValue(#"Replaced Value24","TEXAS - TX","TEXAS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value26" = Table.ReplaceValue(#"Replaced Value25","TX - TEXAS","TEXAS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value27" = Table.ReplaceValue(#"Replaced Value26","AZ - ARIZONA","ARIZONA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value28" = Table.ReplaceValue(#"Replaced Value27","MO - MISSOURI","MISSOURI",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value29" = Table.ReplaceValue(#"Replaced Value28","FLORIDA (FL)","FLORIDA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value30" = Table.ReplaceValue(#"Replaced Value29","NEW YORK (NY)","NEW YORK",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value31" = Table.ReplaceValue(#"Replaced Value30","LA - LOUISIANA","LOUISIANA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value32" = Table.ReplaceValue(#"Replaced Value31","COLORADO (CO)","COLORADO",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value33" = Table.ReplaceValue(#"Replaced Value32","TEXAS [TX]","TEXAS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value34" = Table.ReplaceValue(#"Replaced Value33","TEXAS - USA","TEXAS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value35" = Table.ReplaceValue(#"Replaced Value34","ATLANTA GA","GEORGIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value36" = Table.ReplaceValue(#"Replaced Value35","IN - INDIANA","INDIANA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value37" = Table.ReplaceValue(#"Replaced Value36","NEW YORK, NY","NEW YORK",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value38" = Table.ReplaceValue(#"Replaced Value37","OH OHIO","OHIO",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value39" = Table.ReplaceValue(#"Replaced Value38","NY - NEW YORK","NEW YORK",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value40" = Table.ReplaceValue(#"Replaced Value39","MD (MARYLAND)","MARYLAND",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value41" = Table.ReplaceValue(#"Replaced Value40","CA CALIFORNIA","CALIFORNIA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value42" = Table.ReplaceValue(#"Replaced Value41","LINCOLNWOOD, ILLINOIS","ILLINOIS",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value43" = Table.ReplaceValue(#"Replaced Value42","OR - OREGON","OREGON",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value44" = Table.ReplaceValue(#"Replaced Value43","UNITED STATES","USA",Replacer.ReplaceText,{"State Name"}),
+				    #"Replaced Value45" = Table.ReplaceValue(#"Replaced Value44","UNITED STATE OF AMERICA","USA",Replacer.ReplaceText,{"State Name"})
+				in
+				    #"Replaced Value45"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

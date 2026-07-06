@@ -1,0 +1,377 @@
+table postings
+	lineageTag: 5d628111-8bfd-4ea1-a712-74fc9a3bee32
+
+	measure remote_job_percentage =
+			IF(
+			    CALCULATE(COUNTA('postings'[remote_allowed]), 'postings'[remote_allowed] = 1) = 0,
+			    0,
+			    DIVIDE(CALCULATE(COUNTA('postings'[remote_allowed]), 'postings'[remote_allowed] = 1), COUNTA('postings'[remote_allowed])))
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 02cfb950-8a43-4350-bb0b-6d7646a72da7
+
+	measure 'Application Rate' = ```
+			
+			    DIVIDE(SUM(postings[applies]), SUM('postings'[views]))
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e71903d1-b7f2-4877-ada3-807b14a505b5
+
+	measure 'all applies' = SUM(postings[applies])
+		formatString: 0
+		lineageTag: fb3f5787-280e-4bb0-af31-3daeede6d83d
+
+	measure 'Avg Time to Close' =
+			
+			AVERAGEX(
+			    postings,
+			    COALESCE(postings[closed_date_time], postings[expiry_date_time]) - postings[listed_date_time]
+			)
+		lineageTag: 561f6262-0bdb-4490-abc4-57949d944a07
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Benefits per Job' = ```
+			
+			DIVIDE(
+			    COUNTROWS(benefits), 
+			    COUNTROWS(postings)
+			)
+			```
+		lineageTag: 82ae17eb-6da8-4d1e-aa92-05ec2b3236f8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column job_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 22ba4e1d-fbe7-4b98-beed-e5e16b8f1b1f
+		summarizeBy: none
+		sourceColumn: job_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_name
+		dataType: string
+		lineageTag: 8c40788d-9103-429a-bcef-90c9d18a9cc3
+		summarizeBy: none
+		sourceColumn: company_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column title
+		dataType: string
+		lineageTag: c778d0fc-3e40-4554-9bf6-a609d8c6bc87
+		summarizeBy: none
+		sourceColumn: title
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: c29aabf5-7b4c-4dee-b435-ed846c9a9001
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_salary
+		dataType: double
+		lineageTag: 67004372-96f6-4c23-b94b-594ff509659e
+		summarizeBy: sum
+		sourceColumn: max_salary
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column pay_period
+		dataType: string
+		lineageTag: 812834d0-3eae-4ab2-b8fc-6595ce8f343e
+		summarizeBy: none
+		sourceColumn: pay_period
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: c4f5577b-ecb6-4572-9db7-76fe9d19931d
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	column company_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e34ebef-8558-49f1-9ee3-ba95eecc7909
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column views
+		dataType: int64
+		formatString: 0
+		lineageTag: 2a734e52-90c5-4772-9648-7893f38d6ed2
+		summarizeBy: sum
+		sourceColumn: views
+
+		annotation SummarizationSetBy = Automatic
+
+	column med_salary
+		dataType: double
+		lineageTag: 6260716f-dce0-42a7-ada8-e298649db3ca
+		summarizeBy: sum
+		sourceColumn: med_salary
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column min_salary
+		dataType: double
+		lineageTag: 4ca1c8a9-a18b-4706-a6a1-87dac0c59314
+		summarizeBy: sum
+		sourceColumn: min_salary
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column formatted_work_type
+		dataType: string
+		lineageTag: bdf08cdd-1a40-4ac4-9d82-d039d694885f
+		summarizeBy: none
+		sourceColumn: formatted_work_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column applies
+		dataType: int64
+		formatString: 0
+		lineageTag: 080a7cab-88b0-4b2d-ab2f-b308aa1625ab
+		summarizeBy: sum
+		sourceColumn: applies
+
+		annotation SummarizationSetBy = Automatic
+
+	column original_listed_time
+		dataType: int64
+		formatString: 0
+		lineageTag: ca151286-0913-42ca-943b-048d07017cdd
+		summarizeBy: sum
+		sourceColumn: original_listed_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column remote_allowed
+		dataType: double
+		lineageTag: 67e08261-2721-4d3e-b71d-2f4ccd55e111
+		summarizeBy: sum
+		sourceColumn: remote_allowed
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column job_posting_url
+		dataType: string
+		lineageTag: 61631ab2-9673-4234-be6f-1be8e8f70a0e
+		summarizeBy: none
+		sourceColumn: job_posting_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column application_url
+		dataType: string
+		lineageTag: 13eebc76-5dc3-4b41-82f0-f723ba04f5b2
+		summarizeBy: none
+		sourceColumn: application_url
+
+		annotation SummarizationSetBy = Automatic
+
+	column application_type
+		dataType: string
+		lineageTag: f9327fcf-2293-4f2e-b2da-d6869ce34534
+		summarizeBy: none
+		sourceColumn: application_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column expiry
+		dataType: int64
+		formatString: 0
+		lineageTag: f4f99b75-ecfd-41f8-ba93-d75c5fae8f74
+		summarizeBy: sum
+		sourceColumn: expiry
+
+		annotation SummarizationSetBy = Automatic
+
+	column closed_time
+		dataType: int64
+		formatString: 0
+		lineageTag: 56d6f44f-d71f-4a83-8b3a-62bf4791ce39
+		summarizeBy: sum
+		sourceColumn: closed_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column formatted_experience_level
+		dataType: string
+		lineageTag: 9a32a164-79ae-4393-b6d6-77495e824184
+		summarizeBy: none
+		sourceColumn: formatted_experience_level
+
+		annotation SummarizationSetBy = Automatic
+
+	column skills_desc
+		dataType: string
+		lineageTag: 965c6cec-6c5e-4287-8371-cb44849ec443
+		summarizeBy: none
+		sourceColumn: skills_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_time
+		dataType: int64
+		formatString: 0
+		lineageTag: 7c46aacd-faac-4832-a71e-08b50023ceba
+		summarizeBy: sum
+		sourceColumn: listed_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column posting_domain
+		dataType: string
+		lineageTag: 90df5ad0-2d76-4f4f-8b46-0d75b38a690a
+		summarizeBy: none
+		sourceColumn: posting_domain
+
+		annotation SummarizationSetBy = Automatic
+
+	column sponsored
+		dataType: int64
+		formatString: 0
+		lineageTag: 8cd93532-4999-4f12-b23c-5cf6cfa79dea
+		summarizeBy: sum
+		sourceColumn: sponsored
+
+		annotation SummarizationSetBy = Automatic
+
+	column work_type
+		dataType: string
+		lineageTag: 08343512-82f1-4809-88ea-54b8831941f0
+		summarizeBy: none
+		sourceColumn: work_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column currency
+		dataType: string
+		lineageTag: b3e5bd75-f3a1-453b-a8ea-fcb6eea164ea
+		summarizeBy: none
+		sourceColumn: currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column compensation_type
+		dataType: string
+		lineageTag: f50bda5e-3d36-4c0f-952a-e3818b7b01ab
+		summarizeBy: none
+		sourceColumn: compensation_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column normalized_salary
+		dataType: double
+		lineageTag: ea979d2b-feb1-447b-b974-db7739752fc8
+		summarizeBy: sum
+		sourceColumn: normalized_salary
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column zip_code
+		dataType: int64
+		formatString: 0
+		lineageTag: 890fc97b-d231-49a3-9c7f-cc3bb1f73da9
+		summarizeBy: sum
+		sourceColumn: zip_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column fips
+		dataType: int64
+		formatString: 0
+		lineageTag: 7deb3173-4918-43b4-8fae-9fe69d575d8f
+		summarizeBy: sum
+		sourceColumn: fips
+
+		annotation SummarizationSetBy = Automatic
+
+	column listed_date_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0250ca53-f7fd-42c6-959c-328e7c18fc9e
+		summarizeBy: none
+		sourceColumn: listed_date_time
+
+		variation Variation
+			isDefault
+			relationship: 6da8de6c-41fd-4adc-ac69-c881fd4a313e
+			defaultHierarchy: LocalDateTable_fc8354ad-665a-4476-9332-f350c99d81a7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column closed_date_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7d7c80b7-6caf-442e-a9b8-8f6f65435d13
+		summarizeBy: none
+		sourceColumn: closed_date_time
+
+		variation Variation
+			isDefault
+			relationship: c6de2dd4-d6b6-4221-b299-db86788cc3ee
+			defaultHierarchy: LocalDateTable_54abcdc0-5ae8-4850-8da7-7a1ed2bcb70c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column expiry_date_time
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a96da228-78f3-4338-9229-82fe1371e8c5
+		summarizeBy: none
+		sourceColumn: expiry_date_time
+
+		variation Variation
+			isDefault
+			relationship: 39446712-f7f2-4fc1-9c70-8815d7819a8f
+			defaultHierarchy: LocalDateTable_a8978042-2d98-4a7f-870a-48fbca940db4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition postings = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ilias\OneDrive\Desktop\ilia\power bi\linkedin job postings\static datasets\postings.csv"),[Delimiter=",", Columns=31, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"job_id", Int64.Type}, {"company_name", type text}, {"title", type text}, {"description", type text}, {"max_salary", type number}, {"pay_period", type text}, {"location", type text}, {"company_id", Int64.Type}, {"views", Int64.Type}, {"med_salary", type number}, {"min_salary", type number}, {"formatted_work_type", type text}, {"applies", Int64.Type}, {"original_listed_time", Int64.Type}, {"remote_allowed", Int64.Type}, {"job_posting_url", type text}, {"application_url", type text}, {"application_type", type text}, {"expiry", Int64.Type}, {"closed_time", Int64.Type}, {"formatted_experience_level", type text}, {"skills_desc", type text}, {"listed_time", Int64.Type}, {"posting_domain", type text}, {"sponsored", Int64.Type}, {"work_type", type text}, {"currency", type text}, {"compensation_type", type text}, {"normalized_salary", type number}, {"zip_code", Int64.Type}, {"fips", Int64.Type}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",null,0,Replacer.ReplaceValue,{"remote_allowed"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Replaced Value", each [pay_period] = "YEARLY"),
+				    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "listed_date_time", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [listed_time] / 1000)),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"listed_date_time", type datetime}}),
+				    #"Added Custom1" = Table.AddColumn(#"Changed Type1", "closed_date_time", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [closed_time] / 1000)),
+				    #"Replaced Errors" = Table.ReplaceErrorValues(#"Added Custom1", {{"closed_date_time", null}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Replaced Errors",{{"closed_date_time", type datetime}}),
+				    #"Added Custom2" = Table.AddColumn(#"Changed Type2", "expiry_date_time", each #datetime(1970, 1, 1, 0, 0, 0) + #duration(0, 0, 0, [expiry] / 1000)),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom2",{{"expiry_date_time", type datetime}})
+				in
+				    #"Changed Type3"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

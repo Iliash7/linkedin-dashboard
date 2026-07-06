@@ -1,0 +1,34 @@
+table states
+	lineageTag: 5afab42f-774f-4938-ac9c-9a50e8b434df
+
+	column 'State Name'
+		dataType: string
+		lineageTag: 5cf25004-170f-4a4f-be16-3f35907fff76
+		summarizeBy: none
+		sourceColumn: State Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Code
+		dataType: string
+		lineageTag: a7eba2cb-95a1-4c45-9bb7-ecf65bcd2374
+		summarizeBy: none
+		sourceColumn: Code
+
+		annotation SummarizationSetBy = Automatic
+
+	partition states = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ilias\OneDrive\Desktop\ilia\power bi\linkedin job postings\static datasets\states.txt"),[Delimiter=",", Columns=2, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"State Name", type text}, {"Code", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

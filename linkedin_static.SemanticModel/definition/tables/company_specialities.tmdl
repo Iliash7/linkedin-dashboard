@@ -1,0 +1,32 @@
+table company_specialities
+	lineageTag: 193609b1-c5a8-4ae2-852d-bb1d3ba7a95c
+
+	column company_id
+		dataType: int64
+		formatString: 0
+		lineageTag: d1000dbd-58f4-460c-8fff-b785dd6a94cd
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column speciality
+		dataType: string
+		lineageTag: df4c163b-8453-4049-9751-db647f889275
+		summarizeBy: none
+		sourceColumn: speciality
+
+		annotation SummarizationSetBy = Automatic
+
+	partition company_specialities = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ilias\OneDrive\Desktop\ilia\power bi\linkedin job postings\static datasets\company_specialities.csv"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"company_id", Int64.Type}, {"speciality", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

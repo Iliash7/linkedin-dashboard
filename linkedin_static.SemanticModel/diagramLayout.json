@@ -1,0 +1,165 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 552.26845331189338,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1288.7736049712871,
+            "y": 552.26845331189338
+          },
+          "nodeIndex": "benefits",
+          "nodeLineageTag": "02dfed16-22e4-4724-b2a1-786394ad8673",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 812.05932357198822,
+            "y": 187.05866967015746
+          },
+          "nodeIndex": "companies",
+          "nodeLineageTag": "e8919df4-e0d0-4a1e-ae50-e99c0f54fed9",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1704,
+            "y": 86
+          },
+          "nodeIndex": "company_industries",
+          "nodeLineageTag": "27854cb1-e17c-401d-b293-03e3baffbd66",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 1988,
+            "y": 86
+          },
+          "nodeIndex": "company_specialities",
+          "nodeLineageTag": "193609b1-c5a8-4ae2-852d-bb1d3ba7a95c",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 2272,
+            "y": 62
+          },
+          "nodeIndex": "employee_counts",
+          "nodeLineageTag": "e965d101-bec7-41e0-a54f-44c53d9f53e5",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 1867.891322284778,
+            "y": 551.41978525074887
+          },
+          "nodeIndex": "job_industries",
+          "nodeLineageTag": "e1dea6be-4b74-408f-b75e-b8ca759f042c",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 1570.673312952503,
+            "y": 558.10045202468314
+          },
+          "nodeIndex": "job_skills",
+          "nodeLineageTag": "ea0addb2-cbaa-4ed5-8430-31c49d16a7c8",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 818.72469394258474,
+            "y": 594.57934288014337
+          },
+          "nodeIndex": "postings",
+          "nodeLineageTag": "5d628111-8bfd-4ea1-a712-74fc9a3bee32",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 1707.6986439259508,
+            "y": 855.39012346475477
+          },
+          "nodeIndex": "skills",
+          "nodeLineageTag": "1a5c0fdc-a75d-4e65-afe9-6f83cd4564dc",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 2005.9507874110825,
+            "y": 833.12123421830756
+          },
+          "nodeIndex": "industries",
+          "nodeLineageTag": "5db53449-74da-4639-8baa-9b3b7690acb1",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 2556,
+            "y": 427.69506173237738
+          },
+          "nodeIndex": "states",
+          "nodeLineageTag": "5afab42f-774f-4938-ac9c-9a50e8b434df",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 44.905697313104007,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

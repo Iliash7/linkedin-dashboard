@@ -1,0 +1,32 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-001
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["benefits","companies","company_industries","company_specialities","employee_counts","job_industries","job_skills","postings","skills","industries","states"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table DateTableTemplate_9be89302-742d-4192-9883-a29f8c337f2c
+ref table benefits
+ref table companies
+ref table company_industries
+ref table company_specialities
+ref table employee_counts
+ref table job_industries
+ref table job_skills
+ref table postings
+ref table skills
+ref table industries
+ref table states
+ref table LocalDateTable_fc8354ad-665a-4476-9332-f350c99d81a7
+ref table LocalDateTable_54abcdc0-5ae8-4850-8da7-7a1ed2bcb70c
+ref table LocalDateTable_a8978042-2d98-4a7f-870a-48fbca940db4
+
+ref cultureInfo en-US
+

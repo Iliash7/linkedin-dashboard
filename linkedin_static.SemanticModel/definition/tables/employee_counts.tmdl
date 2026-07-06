@@ -1,0 +1,51 @@
+table employee_counts
+	lineageTag: e965d101-bec7-41e0-a54f-44c53d9f53e5
+
+	column company_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 106b7063-cb71-4094-8cff-6dd59a5641d0
+		summarizeBy: none
+		sourceColumn: company_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column employee_count
+		dataType: int64
+		formatString: 0
+		lineageTag: f0560ccd-8c34-4771-9964-3f22ad997b2f
+		summarizeBy: sum
+		sourceColumn: employee_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column follower_count
+		dataType: int64
+		formatString: 0
+		lineageTag: a2187562-dd8b-4d65-aa2c-ef182998a821
+		summarizeBy: sum
+		sourceColumn: follower_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_recorded
+		dataType: int64
+		formatString: 0
+		lineageTag: 9b4b232b-dcd0-4777-a37a-60c9b22f8064
+		summarizeBy: sum
+		sourceColumn: time_recorded
+
+		annotation SummarizationSetBy = Automatic
+
+	partition employee_counts = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\ilias\OneDrive\Desktop\ilia\power bi\linkedin job postings\static datasets\employee_counts.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"company_id", Int64.Type}, {"employee_count", Int64.Type}, {"follower_count", Int64.Type}, {"time_recorded", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
